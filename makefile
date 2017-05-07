@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror -g
 LINK=-l pthread -l dl -l crypto
 
 CCMD=$(CC) $(CFLAGS) $(LINK)
