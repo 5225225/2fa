@@ -1,0 +1,53 @@
+The application is meant to be run on an embedded device however it
+could be run over the network as long as the remote server is trusted.
+SSH would be used to connect to it.
+
+token {
+
+bool immutable:
+    Can't be deleted or modified in any way. This flag can't be unset
+    (without mounting the SD card in a new device and modifying the
+    database).
+
+blob key:
+    The private key to the token.
+    This must *never* be exposed over the command line interface.
+
+int digits:
+    Number of digits for token. Up to 9 is allowed.
+
+str type:
+    Token type. Either TOTP,HOTP, all other values are errors.
+
+str name:
+    An identifier for the token.
+    This uniquely identifies the token.
+
+    Example names would be "desktop_ssh" or "github".
+    This can't have any spaces in it (due to the parser).
+
+str description:
+    This allows you to give more information about a token.
+    This is a single line of any data.
+
+}
+===
+
+token
+    add <token-name> --type hotp|totp --digits 1-9 --key <key> 
+    del <token-name>
+        You'll be asked to confirm the token deletion by entering the
+        name again.
+    mod <token-name> set immutable|description
+        If you try to set immutable, it will prompt like
+        Are you *sure* you want to set this token immutable?
+        This will prevent any modification or deletion, even of the
+        description.
+        Type "YES." to confirm.
+
+        If you set the description, the prompt will be
+            description>
+        and you'll be able to set a line of text there.
+    mod <token-name> get immutable|digits|type|description
+        The key is not readable by design, and the name is already
+        given.
